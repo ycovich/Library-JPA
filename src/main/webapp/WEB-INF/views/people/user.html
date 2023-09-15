@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${'user '+person.getId()}">user</title>
+</head>
+<body>
+    <p th:text="${person.getName()+', '+person.getYear()}">name, year</p>
+
+    <div th:if="${not #lists.isEmpty(user_books)}">
+        <hr/>
+        <b>Books:</b>
+        <div th:each="book : ${user_books}">
+            <a th:href="@{/books/{id} (id=${book.getId()})}"
+               th:text="${book.getName()+', '+book.getAuthor()+', '+book.getYear()}">
+                user
+            </a>
+        </div>
+        <hr/>
+    </div>
+
+    <div th:if="${#lists.isEmpty(user_books)}">
+        <hr/>
+            <div th:text="${person.getName()}+' doesn\'t keep any books at the moment'"></div>
+        <hr/>
+    </div>
+
+    <br/>
+
+    <form th:action="@{/people/{id}/edit (id=${person.getId()})}">
+        <input type="submit" value="edit"/>
+    </form>
+
+    <form th:method="DELETE" th:action="@{/people/{id} (id=${person.getId()})}">
+        <input type="submit" value="delete"/>
+    </form>
+
+</body>
+</html>
