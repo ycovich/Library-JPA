@@ -1,6 +1,7 @@
 package by.ycovich.controller;
 
 import by.ycovich.dao.BookDAO;
+import by.ycovich.dao.PersonDAO;
 import by.ycovich.model.Book;
 import by.ycovich.util.BookValidator;
 import jakarta.validation.Valid;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
     private final BookDAO bookDAO;
     private final BookValidator bookValidator;
+    private final PersonDAO personDAO;
     @Autowired
-    public BookController(BookDAO bookDAO, BookValidator bookValidator) {
+    public BookController(BookDAO bookDAO, BookValidator bookValidator, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
         this.bookValidator = bookValidator;
+        this.personDAO = personDAO;
     }
 
     @GetMapping("/add")
@@ -45,6 +48,7 @@ public class BookController {
     @GetMapping("/{id}")
     public String getBook(@PathVariable("id") int id, Model model){
         model.addAttribute("book", bookDAO.getBook(id));
+        model.addAttribute("keeper", bookDAO.getBookKeeper(id));
         return "books/book";
     }
 
@@ -55,7 +59,7 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@PathVariable("id") int id, @ModelAttribute("person") @Valid Book book,
+    public String update(@PathVariable("id") int id, @ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult){
         bookValidator.validate(book, bindingResult);
         if (bindingResult.hasErrors())
@@ -63,6 +67,15 @@ public class BookController {
         bookDAO.update(id, book);
         return "redirect:/books";
     }
+
+    /*
+    @PatchMapping("/{id}")
+    public String assign(@PathVariable("id") int id, Model model){
+        model.addAttribute("person", personDAO.getPerson(id));
+        return "books/book";
+    }
+
+     */
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id){
