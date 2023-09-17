@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class BookDAO {
@@ -50,6 +49,14 @@ public class BookDAO {
     public void update(int id, Book updBook){
         jdbcTemplate.update("UPDATE book SET name=?, author=?, year=? WHERE id=?",
                 updBook.getName(),updBook.getAuthor(),updBook.getYear(), id);
+    }
+
+    public void assign(int book_id, int person_id){
+        jdbcTemplate.update("UPDATE book SET person_id=? WHERE id=?", person_id, book_id);
+    }
+
+    public void release(int id){
+        jdbcTemplate.update("UPDATE book SET person_id=? WHERE id=?",null, id);
     }
 
     public void delete(int id){

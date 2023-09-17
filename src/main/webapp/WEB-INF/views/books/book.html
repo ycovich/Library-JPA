@@ -10,26 +10,25 @@
 
   <div th:if="${keeper != null}">
       <div th:text="'the book is in the possession of '+${keeper.getName()}"></div>
+      <form th:method="PATCH" th:action="@{/books/{id}/release (id=${book.getId()})}">
+          <input type="submit" value="release"/>
+      </form>
       <hr/>
   </div>
 
-  <!--
-  <div th:if="${keeper != null}">
+
+  <div th:if="${keeper == null}">
       <div>the book is available</div>
-      <form th:method="PATCH" th:action="@{/book/assign}">
+      <form th:method="PATCH" th:action="@{/books/{id}/assign (id=${book.getId()})}">
           <label for="person">assign it to: </label>
-          <select id="person" th:object="${person}" th:field="*{id}">
-              <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getName()}">
-              </option>
+          <select th:object="${person}" th:field="*{id}" id="person">
+              <option th:each="person : ${people}" th:value="${person.getId()}"
+                      th:text="${person.getName()}"></option>
           </select>
-          <br/>
           <input type="submit" value="assign"/>
       </form>
       <hr/>
   </div>
-  -->
-
-
 
 
 
