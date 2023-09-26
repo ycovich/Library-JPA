@@ -4,7 +4,6 @@ import by.ycovich.dao.BookDAO;
 import by.ycovich.dao.PersonDAO;
 import by.ycovich.model.Book;
 import by.ycovich.model.Person;
-import by.ycovich.util.BookValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/books")
 public class BookController {
     private final BookDAO bookDAO;
-    private final BookValidator bookValidator;
     private final PersonDAO personDAO;
     @Autowired
-    public BookController(BookDAO bookDAO, BookValidator bookValidator, PersonDAO personDAO) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
-        this.bookValidator = bookValidator;
         this.personDAO = personDAO;
     }
 
@@ -33,7 +30,6 @@ public class BookController {
     @PostMapping()
     public String create(@ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult){
-        bookValidator.validate(book, bindingResult);
         if (bindingResult.hasErrors())
             return "books/new";
         bookDAO.save(book);
@@ -67,7 +63,6 @@ public class BookController {
     public String update(@PathVariable("id") int id,
                          @ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult){
-        bookValidator.validate(book, bindingResult);
         if (bindingResult.hasErrors())
             return "books/edit";
         bookDAO.update(id, book);

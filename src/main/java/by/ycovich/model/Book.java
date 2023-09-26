@@ -9,16 +9,16 @@ public class Book {
 
     @NotEmpty(message = "enter the book's name")
     @Size(min = 2, max = 60, message = "2-60 characters")
-    private String name;
+    private String title;
     @NotEmpty(message = "enter the author's name")
     @Size(min = 2, max = 45, message = "2-45 characters")
     private String author;
-    @Min(value = 0)
+    @Min(value = 1700, message = "too old book for our library")
     private int year;
 
-    public Book(int id, String name, String author, int year) {
+    public Book(int id, String title, String author, int year) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.author = author;
         this.year = year;
     }
@@ -28,8 +28,8 @@ public class Book {
     public int getId() {return id;}
     public void setId(int id) {this.id = id;}
 
-    public String getName() {return name;}
-    public void setName(String name) {this.name = name;}
+    public String getTitle() {return title;}
+    public void setTitle(String title) {this.title = title;}
 
     public String getAuthor() {return author;}
     public void setAuthor(String author) {this.author = author;}

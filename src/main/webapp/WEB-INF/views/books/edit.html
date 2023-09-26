@@ -9,8 +9,8 @@
     <label>edit book:</label>
     <br/>
 
-    <input type="text" th:field="*{name}" id="name"/>
-    <div style="color: crimson" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">invalid name input</div>
+    <input type="text" th:field="*{title}" id="title"/>
+    <div style="color: crimson" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">invalid title input</div>
     <br>
 
     <input type="text" th:field="*{author}" id="author"/>
