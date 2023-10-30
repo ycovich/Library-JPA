@@ -13,9 +13,15 @@
         <div style="color: crimson" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">invalid name input</div>
         <br>
 
-        <input type="text" th:field="*{year}" id="year"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">invalid year input</div>
+        <input type="text" th:field="*{lastname}" id="lastname"/>
+        <div style="color: crimson" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">invalid lastname input</div>
+        <br>
+
+        <input type="text" th:field="*{dateOfBirth}" id="dateOfBirth"/>
+        <div style="color: crimson" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">invalid date of birth input</div>
         <br/>
+
+
 
         <input type="submit" value="save changes">
     </form>

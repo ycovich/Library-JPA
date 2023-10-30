@@ -11,9 +11,19 @@
         <div style="color: crimson" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">invalid name input</div>
         <br/>
 
-        <label for="year">enter year of birth:</label>
-        <input type="text" th:field="*{year}" id="year"/>
-        <div style="color: crimson" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">invalid year input</div>
+        <label for="lastname">enter lastname:</label>
+        <input type="text" th:field="*{lastname}" id="lastname"/>
+        <div style="color: crimson" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">invalid lastname input</div>
+        <br/>
+
+        <label for="email">enter email:</label>
+        <input type="text" th:field="*{email}" id="email"/>
+        <div style="color: crimson" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">invalid email input</div>
+        <br/>
+
+        <label for="dateOfBirth">enter date of birth:</label>
+        <input type="text" th:field="*{dateOfBirth}" id="dateOfBirth"/>
+        <div style="color: crimson" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">invalid date of birth input</div>
         <br/>
 
         <input type="submit" value="add">
