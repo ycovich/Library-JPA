@@ -8,7 +8,7 @@
   <p th:text="${book.getTitle()+', '+book.getAuthor()+', '+book.getYear()}">title, author, year</p>
 
   <div th:if="${keeper != null}">
-      <div th:text="'the book is in the possession of '+${keeper.getName()}"></div>
+      <div th:text="'the book is in the possession of '+${keeper.getFullName() + ', ' + keeper.getEmail()}"></div>
       <form th:method="PATCH" th:action="@{/books/{id}/release (id=${book.getId()})}">
           <input type="submit" value="release"/>
       </form>

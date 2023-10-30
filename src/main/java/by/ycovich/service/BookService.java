@@ -5,10 +5,10 @@ import by.ycovich.model.Person;
 import by.ycovich.repository.BooksRepository;
 import by.ycovich.repository.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -27,9 +27,21 @@ public class BookService {
         return booksRepository.findAll();
     }
 
+    public List<Book> getBooks(boolean toBeSorted){
+        return booksRepository.findAll(Sort.by("year"));
+    }
+
+    public List<Book> getBooks(int page, int itemsPerPage){
+        return booksRepository.findAll(PageRequest.of(page, itemsPerPage)).getContent();
+    }
+
+    public List<Book> getBooks(int page, int itemsPerPage, boolean toBeSorted){
+        return booksRepository.findAll(PageRequest.of(page, itemsPerPage, Sort.by("year"))).getContent();
+    }
+
+
     public Book getBook(int id){
-        Book book = booksRepository.findById(id);
-        return book;
+        return booksRepository.findById(id);
     }
 
     public Person getKeeper(int id){
@@ -55,23 +67,14 @@ public class BookService {
     @Transactional
     public void assign(Book book, Person person){
         book.setOwner(person);
-        person.setBooks(new ArrayList<>(Collections.singletonList(book)));
         booksRepository.save(book);
-        peopleRepository.save(person);
     }
 
     @Transactional
-    public void release(int id){    // todo
-        Person person = peopleRepository.findByBooksId(id);
-        List<Book> books = booksRepository.findByOwner(person);
+    public void release(int id){
         Book book = booksRepository.findById(id);
-
-        books.remove(id);
         book.setOwner(null);
-        person.setBooks(books);
-
         booksRepository.save(book);
-        peopleRepository.save(person);
     }
 
 }

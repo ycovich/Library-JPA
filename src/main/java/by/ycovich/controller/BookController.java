@@ -38,10 +38,30 @@ public class BookController {
     }
 
     @GetMapping()
-    public String getBooks(Model model){
-        model.addAttribute("books", booksService.getBooks());
+    public String getBooks(Model model,
+                           @RequestParam(value = "page",
+                                   required = false) Integer page,
+                           @RequestParam(value = "books_per_page",
+                                   required = false) Integer booksPerPage,
+                           @RequestParam(value = "sort_by_year",
+                                   required = false) Boolean toBeSorted){
+        if ((page != null || booksPerPage != null)){
+            if (toBeSorted != null && toBeSorted)
+                model.addAttribute("books",
+                    booksService.getBooks(page, booksPerPage, toBeSorted));
+            else
+                model.addAttribute("books",
+                        booksService.getBooks(page, booksPerPage));
+        } else if (toBeSorted != null && toBeSorted) {
+            model.addAttribute("books",
+            booksService.getBooks(toBeSorted));
+        } else {
+            model.addAttribute("books",
+                    booksService.getBooks());
+        }
         return "books/all";
     }
+
 
     @GetMapping("/{id}")
     public String getBook(@PathVariable("id") int id,

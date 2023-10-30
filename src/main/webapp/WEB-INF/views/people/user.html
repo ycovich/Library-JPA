@@ -5,7 +5,7 @@
     <title th:text="${'user '+person.getId()}">user</title>
 </head>
 <body>
-    <p th:text="${person.getFullName() + ', ' + person.dateOfBirth + ', ' + person.getEmail()}">name, lastname, email</p>
+    <p th:text="${person.getFullName() + ', ' + person.getEmail() + ', ' + person.getDateOfBirth()}">name, lastname, email</p>
 
     <div th:if="${not #lists.isEmpty(user_books)}">
         <hr/>
