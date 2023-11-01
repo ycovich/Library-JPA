@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Book")
@@ -23,21 +24,26 @@ public class Book {
     @Column(name = "author")
     private String author;
 
-
     @Min(value = 1700, message = "too old book for our library")
     @Column(name = "year")
     private int year;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "borrow_time")
+    private LocalDateTime borrowTime;
+
+    @Transient
+    private boolean isOverdue;
 
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;
 
-    public Book(int id, String title, String author, int year, Person owner) {
-        this.id = id;
+    public Book(String title, String author, int year, LocalDateTime borrowTime, Person owner) {
         this.title = title;
         this.author = author;
         this.year = year;
+        this.borrowTime = borrowTime;
         this.owner = owner;
     }
 
@@ -62,6 +68,22 @@ public class Book {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public LocalDateTime getBorrowTime() {
+        return borrowTime;
+    }
+
+    public void setBorrowTime(LocalDateTime borrowTime) {
+        this.borrowTime = borrowTime;
+    }
+
+    public boolean isOverdue() {
+        return isOverdue;
+    }
+
+    public void setOverdue(boolean overdue) {
+        isOverdue = overdue;
     }
 
     @Override

@@ -9,6 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -68,6 +71,7 @@ public class BookService {
     @Transactional
     public void assign(Book book, Person person){
         book.setOwner(person);
+        book.setBorrowTime(LocalDateTime.now());
         booksRepository.save(book);
     }
 
@@ -75,6 +79,7 @@ public class BookService {
     public void release(int id){
         Book book = booksRepository.findById(id);
         book.setOwner(null);
+        book.setBorrowTime(null);
         booksRepository.save(book);
     }
 

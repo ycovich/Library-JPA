@@ -4,10 +4,13 @@ import by.ycovich.model.Book;
 import by.ycovich.model.Person;
 import by.ycovich.repository.BooksRepository;
 import by.ycovich.repository.PeopleRepository;
+import jakarta.persistence.Transient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +37,9 @@ public class PeopleService {
     }
 
     public List<Book> getPersonalBooks(Person person){
-        return booksRepository.findByOwner(person);
+        List<Book> books = booksRepository.findByOwner(person);
+        checkIfOverdue(books);
+        return books;
     }
 
     @Transactional
@@ -52,5 +57,15 @@ public class PeopleService {
     @Transactional
     public void delete(int id){
         peopleRepository.deleteById(id);
+    }
+
+    @Transient
+    public void checkIfOverdue(List<Book> books){
+        for (Book book : books){
+            if (book.getBorrowTime() == null) return;
+            LocalDateTime currentTime = LocalDateTime.now();
+            long daysDifference = ChronoUnit.DAYS.between(book.getBorrowTime().toLocalDate(), currentTime.toLocalDate());
+            book.setOverdue(daysDifference > 10);
+        }
     }
 }
