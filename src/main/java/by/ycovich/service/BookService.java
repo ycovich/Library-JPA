@@ -27,18 +27,19 @@ public class BookService {
         return booksRepository.findAll();
     }
 
-    public List<Book> getBooks(boolean toBeSorted){
-        return booksRepository.findAll(Sort.by("year"));
+    public List<Book> getBooks(boolean sortByYear){
+        if (sortByYear) return booksRepository.findAll(Sort.by("year"));
+        else return booksRepository.findAll();
     }
 
-    public List<Book> getBooks(int page, int itemsPerPage){
-        return booksRepository.findAll(PageRequest.of(page, itemsPerPage)).getContent();
+    public List<Book> getBooks(int page, int itemsPerPage, boolean sortByYear){
+        if (sortByYear) return booksRepository.findAll(PageRequest.of(page, itemsPerPage, Sort.by("year"))).getContent();
+        else return booksRepository.findAll(PageRequest.of(page, itemsPerPage)).getContent();
     }
 
-    public List<Book> getBooks(int page, int itemsPerPage, boolean toBeSorted){
-        return booksRepository.findAll(PageRequest.of(page, itemsPerPage, Sort.by("year"))).getContent();
+    public List<Book> getBooks(String keyword){
+        return booksRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(keyword, keyword);
     }
-
 
     public Book getBook(int id){
         return booksRepository.findById(id);

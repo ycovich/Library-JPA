@@ -5,6 +5,14 @@
     <title>all books</title>
 </head>
 <body>
+<form th:action="@{/books/search}" th:method="GET">
+    <input type="text" name="keyword" id="keyword">
+    <button type="submit">search</button>
+</form>
+
+<hr/>
+
+<br/>
   <div th:each="book : ${books}">
     <a th:href="@{/books/{id} (id=${book.getId()})}"
        th:text="${book.getTitle()+', '+book.getAuthor()+', '+book.getYear()}">
@@ -13,6 +21,20 @@
   </div>
   <br/>
   <hr/>
-  <a href="/books/add">add book</a>
+  <form action="/books/add" method="GET">
+      <button type="submit">add book</button>
+  </form>
+
+  <hr/>
+  <div style="display: flex">
+      <form th:method="GET" th:action="@{/books}" style="margin-right: 10px">
+          <input type="hidden" name="sortByYear" value="true">
+          <input type="submit" value="sort">
+      </form>
+      <form th:method="GET" th:action="@{/books}">
+          <input type="hidden" name="sortByYear" value="false">
+          <input type="submit" value="default">
+      </form>
+  </div>
 </body>
 </html>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/books")
@@ -39,26 +40,22 @@ public class BookController {
 
     @GetMapping()
     public String getBooks(Model model,
-                           @RequestParam(value = "page",
-                                   required = false) Integer page,
-                           @RequestParam(value = "books_per_page",
-                                   required = false) Integer booksPerPage,
-                           @RequestParam(value = "sort_by_year",
-                                   required = false) Boolean toBeSorted){
-        if ((page != null || booksPerPage != null)){
-            if (toBeSorted != null && toBeSorted)
-                model.addAttribute("books",
-                    booksService.getBooks(page, booksPerPage, toBeSorted));
-            else
-                model.addAttribute("books",
-                        booksService.getBooks(page, booksPerPage));
-        } else if (toBeSorted != null && toBeSorted) {
-            model.addAttribute("books",
-            booksService.getBooks(toBeSorted));
+                           @RequestParam(value = "page", required = false) Integer page,
+                           @RequestParam(value = "books_per_page", required = false) Integer booksPerPage,
+                           @RequestParam(value = "sortByYear", required = false) boolean sortByYear) {
+        if (page == null || booksPerPage == null){
+            model.addAttribute("books", booksService.getBooks(sortByYear));
         } else {
-            model.addAttribute("books",
-                    booksService.getBooks());
+            model.addAttribute("books", booksService.getBooks(page, booksPerPage, sortByYear));
         }
+        return "books/all";
+    }
+
+    @GetMapping("/search")
+    public String searchBooks(Model model,
+                              @RequestParam(value = "keyword") String keyword) {
+        List<Book> books = booksService.getBooks(keyword);
+        model.addAttribute("books", books);
         return "books/all";
     }
 
