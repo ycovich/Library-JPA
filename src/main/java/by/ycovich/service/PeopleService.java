@@ -36,6 +36,10 @@ public class PeopleService {
         return person.orElse(null);
     }
 
+    public Optional<Person> getPerson(String name, String lastname, String email){
+        return peopleRepository.findByNameAndLastnameAndEmail(name, lastname, email);
+    }
+
     public List<Book> getPersonalBooks(Person person){
         List<Book> books = booksRepository.findByOwner(person);
         checkIfOverdue(books);

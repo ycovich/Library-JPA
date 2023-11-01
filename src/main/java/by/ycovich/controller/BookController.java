@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/books")
+@RequestMapping(value = {"/books", "/books/"})
 public class BookController {
     private final BookService booksService;
     private final PeopleService peopleService;
